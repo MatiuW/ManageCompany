@@ -1,6 +1,10 @@
 package pl.mateusz.ManageCompany.model.Employees;
 
+import pl.mateusz.ManageCompany.model.Project.Project;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -33,6 +37,14 @@ public class Employee {
 
     @Enumerated(EnumType.STRING)
     private EmployeeJob employeeJob;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "Employee_Project",
+            joinColumns = { @JoinColumn(name = "employee_id") },
+            inverseJoinColumns = { @JoinColumn(name = "project_id") }
+    )
+    Set<Project> projects = new HashSet<>();
 
     public EmployeeStatus getEmployeeStatus() {
         return employeeStatus;

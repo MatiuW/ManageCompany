@@ -28,7 +28,7 @@ public class IndexController {
             //To-Do
         }
 
-        return "index2";
+        return "myfront/index2";
     }
 
     @GetMapping("/_layout")
@@ -49,10 +49,24 @@ public class IndexController {
             model.addAttribute("address", employee.getAddress());
             model.addAttribute("phone", employee.getPhone());
             model.addAttribute("email", employee.getEmail());
-
+            model.addAttribute("description", employee.getDescription());
         }else {
             //To-Do
         }
         return "myfront/profile";
+    }
+    @GetMapping("/createProject")
+    public String createProject() {
+        return "myfront/createProject";
+    }
+
+    @GetMapping("/yourProjects")
+    public String yourProjects() {
+        return "myfront/yourProjects";
+    }
+
+    @GetMapping("/checkProjects")
+    public String checkProjects() {
+        return "myfront/checkProjects";
     }
 }
