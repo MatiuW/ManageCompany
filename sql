@@ -1,0 +1,1 @@
+INSERT INTO employee(id, name, password, employee_role, employee_status) values(1, 'test', 'pass', 'ROLE_BASIC', 'ACTIVED')

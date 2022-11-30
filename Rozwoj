@@ -1,0 +1,47 @@
+Zdalne zarządzanie firma informatyczna
+- zarzadzanie użytkownikami/wyposażeniem/salami
+- przypisywanie sprzetow
+- wynajmowanie sal
+- wypozyczania rezerwonania/opisywania
+- kalendarz tworzony dynamicznie na podstawie zapytania
+- komunikacja za pomoca czatu
+- mozliwosc dynamicznego zarezerwowania sali i wyswietlania tego na kalendarzu
+
+Zarzadzanie projektami i uzytkownikami w tych projektach:
+
+- mozna wyszukac projekty i zobaczyc ogolny ich opis i spis pracownikow
+- do projektu dodaje kierownik projektu
+- mozliwosc komunikacji z innymi pracownikami
+
+Ogólny opis:
+ekran zawiera liste(kalendarz) z wieloma opcjami do wyboru:
+- Na ekranie mozna zobaczyc godziny pracy kazdego pracownika:
+pracownicy moga pracowac w roznych strefach czasowych, wiec kalendarz musi zostac
+dopasowany do strefy czasowej kazdego uzytkownika
+- Kazdy uzytkownik moze okreslic swoj status w odpowiednich porach np o 14-14:30 je obiad,
+wiec ma status zajety lub jakis inny powod, ktory moze wpisac w pole
+- mozliwa jest zmiana godzin pracy wedlug jednej z opcji:
++ przesuniecie o krótki okres czasu: np 1h
++ wyslanie zwolnienia lekarskiego
+Uzytkownicy naleza do roznych zespolow
+i kazdy zespol ma swojego minimum 1 kierownika(po prostu osobe z wiekszymi prawami),
+na planie mozna wybrac
+- jaki zespol ma sie wyswietlic, do danego zespolu dodaje kierownik zespolu
+- wyszukac konkretnych uzytkownikow ze wzgledu na goddzine,
+
++ w zaleznosci od truby pracy zdalnej/stacjonarnej system ustala indywidualne godziny pracy, ktore
+uzytkownik w formie zdalnej moze zmodyfikowac
+
+Zarzadzanie wypozazeniem:
+- osoba ktora pracuje zdalnie, moze wypozyczyc jakis dostepny sprzet na czas obytu w biurze
+- uzytkownik moze dodawac do siebie wyposazenie i je usuwac, na jakis okres czasu
+
+Zarzadzanie salami:
+
+Ogolny opis:
+Ekran zawiera tak jak w przypadku uzytkownikow kalendarz z godzinami
+
+- uzytkownik moze wynajac na dana chwile jakas sale, zostanie ona zarezerwowana
+
+linki:
+https://rho.pl/modus-erp/?gclid=Cj0KCQiApb2bBhDYARIsAChHC9ukax9QmtaZaqUdBqlNPuGIo9uWgIfUrLcsGQo7mWS0c8f9XqZXdY8aAvVgEALw_wcB
