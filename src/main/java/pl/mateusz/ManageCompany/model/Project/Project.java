@@ -2,10 +2,7 @@ package pl.mateusz.ManageCompany.model.Project;
 
 import pl.mateusz.ManageCompany.model.Employees.Employee;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +15,13 @@ public class Project {
     private Long id;
 
     private String projectTitle;
-    private Date startDate;
-    private Date endDate;
-    private String status;
-    private String projectOwner;
+    private String startDate;
+    private String endDate;
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
+    private Long projectOwnerId;
     private String tags;
+    private String description;
 
     @ManyToMany(mappedBy = "projects")
     private Set<Employee> employees = new HashSet<>();
@@ -35,36 +34,36 @@ public class Project {
         this.projectTitle = projectTitle;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public ProjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProjectStatus status) {
         this.status = status;
     }
 
-    public String getProjectOwner() {
-        return projectOwner;
+    public Long getProjectOwnerId() {
+        return projectOwnerId;
     }
 
-    public void setProjectOwner(String projectOwner) {
-        this.projectOwner = projectOwner;
+    public void setProjectOwnerId(Long projectOwnerId) {
+        this.projectOwnerId = projectOwnerId;
     }
 
     public String getTags() {
@@ -81,5 +80,21 @@ public class Project {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

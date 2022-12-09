@@ -8,13 +8,7 @@ import pl.mateusz.ManageCompany.model.Project.Project;
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-    @Query(value = "SELECT * FROM employee WHERE name = :name", nativeQuery = true)
-    Optional<Employee> findByNameTwo(String name);
-
-    Employee findByName(String name);
-
-    List<Employee> findEmployeeById(Long projectId);
-
+    List<Project> findEmployeeById(Long id);
 }

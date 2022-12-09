@@ -46,6 +46,14 @@ public class Employee {
     )
     Set<Project> projects = new HashSet<>();
 
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
     public EmployeeStatus getEmployeeStatus() {
         return employeeStatus;
     }

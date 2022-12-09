@@ -7,13 +7,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
+import pl.mateusz.ManageCompany.model.Project.Project;
+import pl.mateusz.ManageCompany.repository.EmployeeRepository;
+import pl.mateusz.ManageCompany.repository.ProjectRepository;
 import pl.mateusz.ManageCompany.service.EmployeeService;
+
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class IndexController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @GetMapping("/index2")
     public String login(Model model) {
@@ -61,7 +73,23 @@ public class IndexController {
     }
 
     @GetMapping("/yourProjects")
-    public String yourProjects() {
+    public String yourProjects(Model model) {
+        System.out.println("tutaj");
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user instanceof UserDetails){
+            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            Set<Project> projects = employee.getProjects();
+
+
+            for(Project proj: projects) {
+                System.out.println("opius projektu: " + proj.getDescription());
+            }
+        }else {
+            //To-Do
+        }
+
+
+
         return "myfront/yourProjects";
     }
 

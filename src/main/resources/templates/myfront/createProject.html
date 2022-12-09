@@ -1,11 +1,62 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="_layout">
+      layout:decorate="_layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
-  <h1>Stwórz projekt</h1>
+
+<!--  <div class="pagetitle">-->
+<!--    <h1>Form Elements</h1>-->
+<!--    <nav>-->
+<!--      <ol class="breadcrumb">-->
+<!--        <li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+<!--        <li class="breadcrumb-item">Forms</li>-->
+<!--        <li class="breadcrumb-item active">Elements</li>-->
+<!--      </ol>-->
+<!--    </nav>-->
+<!--  </div>&lt;!&ndash; End Page Title &ndash;&gt;-->
+
+  <section class="section">
+    <div class="row">
+      <div class="col">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">General Form Elements</h5>
+
+            <!-- General Form Elements -->
+            <form th:action="@{/createProject}" th:object="${createProject}" method="post">
+
+              <div class="row mb-3">
+                <label for="projectTitle" class="col-sm-2 col-form-label">Project title</label>
+                <div class="col-sm-10">
+                  <input type="text" field="*{title}" name="title"  class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea field="*{description}" name="description" class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Tags</label>
+                <div class="col-sm-10">
+                  <textarea field="*{tags}" name="tags" class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
+              <input type="submit" value="Create Project">
+            </form><!-- End General Form Elements -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
 </div>
 
 </body>
