@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="_layout">
+      layout:decorate="_layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
-    <h1>Moje projekty</h1>
 
     <section class="section">
         <div class="row">
@@ -13,54 +13,27 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Default Table</h5>
+                        <h5 class="card-title">Moje projekty</h5>
 
                         <!-- Default Table -->
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Position</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Start Date</th>
+                                <th scope="col">Nazwa projektu</th>
+                                <th scope="col">Opis</th>
+                                <th scope="col">Tagi</th>
+                                <th scope="col">Szczegóły</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Brandon Jacob</td>
-                                <td>Designer</td>
-                                <td>28</td>
-                                <td>2016-05-25</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Bridie Kessler</td>
-                                <td>Developer</td>
-                                <td>35</td>
-                                <td>2014-12-05</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Ashleigh Langosh</td>
-                                <td>Finance</td>
-                                <td>45</td>
-                                <td>2011-08-12</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Angus Grady</td>
-                                <td>HR</td>
-                                <td>34</td>
-                                <td>2012-06-11</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Raheem Lehner</td>
-                                <td>Dynamic Division Officer</td>
-                                <td>47</td>
-                                <td>2011-04-19</td>
+                            <tr th:each = "projects: ${projects}">
+<!--                                <th scope="row">5</th>-->
+                                <td th:text="${projects.projectTitle}"></td>
+                                <td th:text="${projects.description}"></td>
+                                <td th:text="${projects.tags}"></td>
+                                <td>
+                                    <a th:href="@{'project' + ${projects.id}}">Link</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

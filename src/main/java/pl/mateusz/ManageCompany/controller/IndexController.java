@@ -67,31 +67,13 @@ public class IndexController {
         }
         return "myfront/profile";
     }
-    @GetMapping("/createProject")
+
+    @GetMapping("createProject")
     public String createProject() {
         return "myfront/createProject";
     }
 
-    @GetMapping("/yourProjects")
-    public String yourProjects(Model model) {
-        System.out.println("tutaj");
-        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof UserDetails){
-            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
-            Set<Project> projects = employee.getProjects();
 
-
-            for(Project proj: projects) {
-                System.out.println("opius projektu: " + proj.getDescription());
-            }
-        }else {
-            //To-Do
-        }
-
-
-
-        return "myfront/yourProjects";
-    }
 
     @GetMapping("/checkProjects")
     public String checkProjects() {

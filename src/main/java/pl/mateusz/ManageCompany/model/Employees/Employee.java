@@ -46,6 +46,11 @@ public class Employee {
     )
     Set<Project> projects = new HashSet<>();
 
+
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+
     public Set<Project> getProjects() {
         return projects;
     }

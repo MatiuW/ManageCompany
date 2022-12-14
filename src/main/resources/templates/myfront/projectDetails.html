@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div layout:fragment="content">
+  <section class="section">
+    <div class="row">
+      <div class="col">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Projekt</h5>
+
+            <!-- Default Table -->
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col">Nazwa projektu</th>
+                <th scope="col">Opis</th>
+                <th scope="col">Tagi</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <!--                                <th scope="row">5</th>-->
+                <td th:text="${project.projectTitle}"></td>
+                <td th:text="${project.description}"></td>
+                <td th:text="${project.tags}"></td>
+              </tr>
+              </tbody>
+            </table>
+            <!-- End Default Table Example -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

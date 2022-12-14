@@ -6,12 +6,13 @@ import pl.mateusz.ManageCompany.model.Employees.Employee;
 import pl.mateusz.ManageCompany.model.Project.CreateProject;
 import pl.mateusz.ManageCompany.model.Project.Project;
 import pl.mateusz.ManageCompany.model.Project.ProjectStatus;
+import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -20,6 +21,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public void saveProject(CreateProject createProject, Employee employee) {
         Project project = new Project();
@@ -30,11 +34,24 @@ public class ProjectService {
         project.setStatus(ProjectStatus.STARTED);
         project.setEndDate(formatter.format(new Date()));
         project.setProjectOwnerId(employee.getId());
+//        project.addEmployee(employee);
 
-        Set<Employee> employees = new TreeSet<>();
-        employees.add(employee);
-        project.setEmployees(employees);
 
         projectRepository.save(project);
+
+        employee.addProject(project);
+        employeeRepository.save(employee);
+    }
+
+    public Project findProjectById(Long id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        Project project = null;
+        if(optionalProject.isPresent()) {
+            project = optionalProject.get();
+        } else {
+
+        }
+
+        return project;
     }
 }
