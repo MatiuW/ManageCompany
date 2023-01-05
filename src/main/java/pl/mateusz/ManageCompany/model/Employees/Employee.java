@@ -1,6 +1,7 @@
 package pl.mateusz.ManageCompany.model.Employees;
 
 import pl.mateusz.ManageCompany.model.Project.Project;
+import pl.mateusz.ManageCompany.model.Task.Task;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -38,17 +39,33 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmployeeJob employeeJob;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
+    @JoinTable(
+            name = "Employee_Task",
+            joinColumns = { @JoinColumn(name = "employee_id") },
+            inverseJoinColumns = { @JoinColumn(name = "task_id") }
+    )
+    private Set<Task> tasks = new HashSet<>();
+
+    @ManyToMany
     @JoinTable(
             name = "Employee_Project",
             joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "project_id") }
     )
-    Set<Project> projects = new HashSet<>();
+    private Set<Project> projects = new HashSet<>();
 
 
     public void addProject(Project project) {
         this.projects.add(project);
+    }
+
+    public void deleteProject(Project project) {
+        this.projects.remove(project);
+    }
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
     }
 
     public Set<Project> getProjects() {

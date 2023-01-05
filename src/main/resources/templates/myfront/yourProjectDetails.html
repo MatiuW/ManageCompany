@@ -7,9 +7,9 @@
 
 <div layout:fragment="content">
 
-    <button type="button" class="btn btn-dark" >
-        <a href="/addEmployee">Dodaj użytkownika</a>
-    </button>
+<!--    <button type="button" class="btn btn-dark" >-->
+<!--        <a href="/addEmployee">Dodaj użytkownika</a>-->
+<!--    </button>-->
 
     <section class="section">
         <div class="row">
@@ -17,23 +17,37 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Moje projekty</h5>
+                        <h5 class="card-title">Dane o projekcie</h5>
 
                         <!-- Default Table -->
                         <table class="table">
                             <thead>
                             <tr>
+                                <th scope="col">Id projektu</th>
                                 <th scope="col">Nazwa projektu</th>
                                 <th scope="col">Opis</th>
                                 <th scope="col">Tagi</th>
+                                <th scope="col">Dodaj użytkownika</th>
+                                <th scope="col">Dodaj task</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <!--                                <th scope="row">5</th>-->
+                                <td th:text="${project.id}"></td>
                                 <td th:text="${project.projectTitle}"></td>
                                 <td th:text="${project.description}"></td>
                                 <td th:text="${project.tags}"></td>
+                                <td>
+                                    <a th:href="@{'addEmployeeToProject' + ${project.id}}">
+                                        Dodaj użytkownika
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{'addTaskToProject' + ${project.id}}">
+                                        Dodaj taska
+                                    </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -44,13 +58,14 @@
         </div>
     </section>
 
+<!--    uzytkownicy-->
     <section class="section">
         <div class="row">
             <div class="col">
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Użytkownicy projektu:</h5>
+                        <h5 class="card-title">Uczestnicy projektu:</h5>
 
                         <!-- Default Table -->
                         <table class="table">
@@ -59,6 +74,8 @@
                                 <th scope="col">Id użytkownika</th>
                                 <th scope="col">Imie i nazwisko</th>
                                 <th scope="col">Rola</th>
+                                <th scope="col">Właściciel projektu</th>
+                                <th scope="col">Usuń użytkownika</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,15 +84,133 @@
                                 <td th:text="${participant.id}"></td>
                                 <td th:text="${participant.name +' '+ participant.surname}"></td>
                                 <td th:text="${participant.employeeJob}"></td>
+                                <td th:text="${ownerId==participant.id} ? 'tak': 'nie'"></td>
+                                <td >
+                                    <a class="btn btn-danger"
+                                       onclick="return confirm('Czy na pewno chcesz usunąć użytkownika?')"
+                                       th:href="@{'/deleteEmployeeFromProject/'+ ${participant.id} + '/' + ${project.id}}">
+                                        Usuń
+                                    </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                         <!-- End Default Table Example -->
                     </div>
                 </div>
+
+<!--                <form th:action="@{addEmployee}" method="get">-->
+
+<!--                    <input class="btn btn-primary" type="submit" value="Dodaj użytkownika">-->
+<!--                </form>&lt;!&ndash; End General Form Elements &ndash;&gt;-->
+<!--                <button href="${project.id}">Dodaj użytkownika</button>-->
             </div>
         </div>
     </section>
+
+    <!--    taski-->
+    <section class="section">
+        <div class="row">
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Zadania:</h5>
+
+                        <!-- Default Table -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Id tasku</th>
+                                <th scope="col">Tytuł</th>
+                                <th scope="col">Opis</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Id kreatora taska</th>
+                                <th scope="col">Czy ważny</th>
+                                <th scope="col">Szczegóły</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each = "task: ${tasks}">
+                                <!--                                <th scope="row">5</th>-->
+                                <td th:text="${task.id}"></td>
+                                <td th:text="${task.title}"></td>
+                                <td th:text="${task.description}"></td>
+                                <td th:text="${task.taskStatus}"></td>
+                                <td th:text="${task.ownerId}"></td>
+                                <td th:text="${task.isImportance} ? 'Tak' : 'Nie'"></td>
+                                <td>
+                                    <a th:href="@{'task' + ${task.id}}">Link</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Default Table Example -->
+                    </div>
+                </div>
+
+                <!--                <form th:action="@{addEmployee}" method="get">-->
+
+                <!--                    <input class="btn btn-primary" type="submit" value="Dodaj użytkownika">-->
+                <!--                </form>&lt;!&ndash; End General Form Elements &ndash;&gt;-->
+                <!--                <button href="${project.id}">Dodaj użytkownika</button>-->
+            </div>
+        </div>
+    </section>
+
+<!--    progres-->
+    <section class="section">
+        <div class="row">
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Łączny stopień ukończenia projektu</h5>
+
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 th:style="'width:' + ${projectCompleteValue} + '%;'"
+                                 aria-valuenow="10000" aria-valuemin="0" aria-valuemax="100">
+                                <a th:text="${projectCompleteValue} + '%'"></a>
+                            </div>
+                        </div>
+
+                        <h5 class="card-title">Stopień ukończenia zadań ważnych</h5>
+
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 th:style="'width:' + ${importantTasksCompleteValue} + '%;'"
+                                 aria-valuenow="10000" aria-valuemin="0" aria-valuemax="100">
+                                <a th:text="${importantTasksCompleteValue} + '%'"></a>
+                            </div>
+                        </div>
+
+                        <h5 class="card-title">Stopień ukończenia pozostałych zadań</h5>
+
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 th:style="'width:' + ${otherTasksCompleteValue} + '%;'"
+                                 aria-valuenow="10000" aria-valuemin="0" aria-valuemax="100">
+                                <a th:text="${otherTasksCompleteValue} + '%'"></a>
+                            </div>
+                        </div>
+<!--                        <div class="progress mt-3">-->
+<!--                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>-->
+<!--                        </div>-->
+<!--                        <div class="progress mt-3">-->
+<!--                            <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>-->
+<!--                        </div>-->
+<!--                        <div class="progress mt-3">-->
+<!--                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>-->
+<!--                        </div>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--    zadania glowne- zadania po ktorych wykonaniu bedzie sie zwiekszac pasek postepu-->
 </div>
 
 </body>

@@ -6,7 +6,80 @@
 <body>
 
 <div layout:fragment="content">
-    <h1>Dodaj uzytkownika</h1>
+    <h1>Dodaj uzytkownika do projektu</h1>
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Wybierz użytkowników, których chcesz dodać do projektu</h5>
+
+                        <!-- Default Table -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Id użytkownika</th>
+                                <th scope="col">Imie i nazwisko</th>
+                                <th scope="col">Rola</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each = "employeesOutsideProject: ${employeesOutsideProject}">
+                                <!--                                <th scope="row">5</th>-->
+                                <td th:text="${employeesOutsideProject.id}"></td>
+                                <td th:text="${employeesOutsideProject.name +' '+ employeesOutsideProject.surname}"></td>
+                                <td th:text="${employeesOutsideProject.employeeJob}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Default Table Example -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">General Form Elements</h5>
+
+                        <!-- General Form Elements -->
+                        <form th:action="@{addEmployeeToProject}" th:object="${addEmployeeToProject}" method="post">
+
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Id projektu</label>
+                                <div class="col-sm-10">
+<!--                                    <input type="text" class="form-control" th:text="${projectId}" disabled>-->
+<!--                                    <p th:text="${projectId}" field="*{projectId}"></p>-->
+                                    <textarea th:text="${projectId}" field="*{projectId}" name="projectId" class="form-control" style="height: 100px"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Id użytkowników</label>
+                                <div class="col-sm-10">
+                                    <textarea field="*{employeeId}" name="employeeId" class="form-control" style="height: 100px"></textarea>
+                                </div>
+                            </div>
+
+                            <input type="submit" value="Dodaj użytkowników">
+
+                        </form><!-- End General Form Elements -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
 </div>
 </body>
 </html>

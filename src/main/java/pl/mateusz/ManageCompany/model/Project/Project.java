@@ -1,6 +1,7 @@
 package pl.mateusz.ManageCompany.model.Project;
 
 import pl.mateusz.ManageCompany.model.Employees.Employee;
+import pl.mateusz.ManageCompany.model.Task.Task;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,8 +24,20 @@ public class Project {
     private String tags;
     private String description;
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
     private Set<Employee> employees = new HashSet<>();
+
+    @OneToMany
+    @JoinColumn(name = "project_id")
+    private Set<Task> tasks;
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
 
     public String getProjectTitle() {
         return projectTitle;
@@ -101,4 +114,18 @@ public class Project {
     public void addEmployee(Employee employee) {
         this.employees.add(employee);
     }
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
+    }
+
+//    public void addBook(Book book) {
+//        this.books.add(book);
+//        book.getAuthors().add(this);
+//    }
+//
+//    public void removeBook(Book book) {
+//        this.books.remove(book);
+//        book.getAuthors().remove(this);
+//    }
 }

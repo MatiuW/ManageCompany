@@ -53,4 +53,16 @@ uzyc dynamic fields aby dodwac lub usuwac uzytkownikow z projektu
 -cos z '7'
 -zdjecia
 -filtrowanie
--logowanie i rejestracja
+-logowanie
+-rejestracja
+
+
+zrobic:
+strone tytulowa - zrobione
+rejestracje i zmienic miejsce logowania
+wyszukiwanie projektow z paginacja, filtrowaniem i ewentualnie gdzies indziej dodac paginacje
+mozliwosc dodania zdjecia do profilu - mozliwosc zmiana danych
+
+
+
+testy jednostkowe i integracyjne
