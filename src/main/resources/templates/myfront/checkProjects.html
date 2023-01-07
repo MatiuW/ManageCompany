@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="_layout">
+      layout:decorate="_layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
-    <h1>Sprawdź projekty</h1>
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Moje projekty</h5>
+
+                        <!-- Default Table -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nazwa projektu</th>
+                                <th scope="col">Opis</th>
+                                <th scope="col">Tagi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each = "projects: ${projects}">
+                                <!--                                <th scope="row">5</th>-->
+                                <td th:text="${projects.projectTitle}"></td>
+                                <td th:text="${projects.description}"></td>
+                                <td th:text="${projects.tags}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Default Table Example -->
+<!--                        <a th:text="${numberOfPages}"></a>-->
+
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" th:href="@{/checkProjects(number=${actualPage-1})}">Poprzednia</a></li>
+
+                                <li class="page-item" th:each="i: ${#numbers.sequence(0, numberOfPages)}">
+                                    <a class="page-link" th:href="@{/checkProjects(number=${i})}" th:text="${i + 1}"></a>
+                                </li>
+<!--                                <li class="page-item"><a class="page-link" href="#" th:each="i: ${#numbers.sequence(1, 5)}">2</a></li>-->
+<!--                                <li class="page-item"><a class="page-link" href="#" th:each="i: ${#numbers.sequence(1, 5)}">3</a></li>-->
+
+                                <li class="page-item"><a class="page-link" th:href="@{/checkProjects(number=${actualPage+1})}">Następna</a></li>
+                            </ul>
+                        </nav><!-- End Basic Pagination -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 </body>

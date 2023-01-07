@@ -1,18 +1,15 @@
 package pl.mateusz.ManageCompany.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import pl.mateusz.ManageCompany.model.Employees.Employee;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.mateusz.ManageCompany.model.Project.Project;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
-public interface ProjectRepository extends CrudRepository<Project, Long> {
+public interface ProjectRepository extends PagingAndSortingRepository<Project, Long> {
 
     List<Project> findEmployeeById(Long id);
 
+    long count();
 
 //    Optional<Project> findById(Long id);
 }

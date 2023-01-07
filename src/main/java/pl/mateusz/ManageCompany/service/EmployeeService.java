@@ -3,9 +3,14 @@ package pl.mateusz.ManageCompany.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
+import pl.mateusz.ManageCompany.model.Employees.EmployeeRole;
+import pl.mateusz.ManageCompany.model.Employees.EmployeeStatus;
+import pl.mateusz.ManageCompany.model.Project.CreateProject;
 import pl.mateusz.ManageCompany.model.Project.Project;
+import pl.mateusz.ManageCompany.model.Project.ProjectStatus;
 import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -39,5 +44,11 @@ public class EmployeeService {
         }
 
         return employee;
+    }
+
+    public void saveEmployee(Employee employee) {
+        employee.setEmployeeStatus(EmployeeStatus.ACTIVED);
+        employee.setEmployeeRole(EmployeeRole.ROLE_BASIC);
+        employeeRepository.save(employee);
     }
 }

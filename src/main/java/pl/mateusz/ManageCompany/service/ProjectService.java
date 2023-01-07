@@ -1,6 +1,9 @@
 package pl.mateusz.ManageCompany.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
 import pl.mateusz.ManageCompany.model.Project.CreateProject;
@@ -13,10 +16,7 @@ import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -34,6 +34,8 @@ public class ProjectService {
 
     @Autowired
     private TaskService taskService;
+
+    public final static Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 
     public void saveProject(CreateProject createProject, Employee employee) {
         Project project = new Project();
@@ -171,6 +173,11 @@ public class ProjectService {
         }
 
         return 100.0;
+    }
+
+    public Page<Project> findAllPageable() {
+        Page<Project> projectList = projectRepository.findAll(firstPageWithTwoElements);
+        return projectList;
     }
 
 }

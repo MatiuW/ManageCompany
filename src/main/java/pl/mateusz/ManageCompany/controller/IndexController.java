@@ -1,16 +1,22 @@
 package pl.mateusz.ManageCompany.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
 import pl.mateusz.ManageCompany.model.Project.Project;
 import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 import pl.mateusz.ManageCompany.service.EmployeeService;
+import pl.mateusz.ManageCompany.service.ProjectService;
 
 import java.util.List;
 import java.util.Set;
@@ -26,6 +32,9 @@ public class IndexController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ProjectService projectService;
 
     @GetMapping("/index2")
     public String login(Model model) {
@@ -74,9 +83,64 @@ public class IndexController {
     }
 
 
+    @GetMapping("/checkProjects{number}")
+    public String checkProjects(Model model, @RequestParam int number) {//Pageable pageable
 
-    @GetMapping("/checkProjects")
-    public String checkProjects() {
+        //paginacja i sortowanie- mozliwosc wylaczenia przejscia na kolejna karte lub poprzedia
+        //wyroznienie karty ktora zostala wybrana
+
+        System.out.println(number);//pobieram 0 1 2
+
+
+
+        if(projectRepository.count() %2==0) {//parzyste
+            if(number > (projectRepository.count()/2)-1) {
+
+                Page<Project> projects = projectRepository.findAll(PageRequest.of((int) ((projectRepository.count()/2) - 1), 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", (projectRepository.count()/2)-1);
+                model.addAttribute("actualPage", (projectRepository.count()/2) - 1);
+            } else if(number < 0) {
+                Page<Project> projects = projectRepository.findAll(PageRequest.of(0, 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", (projectRepository.count()/2)-1);
+                model.addAttribute("actualPage", 0);
+            } else {
+                Page<Project> projects = projectRepository.findAll(PageRequest.of(number, 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", (projectRepository.count()/2)-1);
+                model.addAttribute("actualPage", number);
+            }
+        }
+
+        if(projectRepository.count() %2!=0) {//np
+
+            if(number > ((projectRepository.count()+1)/2)-1) {
+                Page<Project> projects = projectRepository.findAll(PageRequest.of((int) ((projectRepository.count()/2) ), 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", ((projectRepository.count()+1)/2)-1);
+                model.addAttribute("actualPage", ((projectRepository.count()+1)/2)-1);
+
+            } else if(number < 0) {
+                Page<Project> projects = projectRepository.findAll(PageRequest.of(0, 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", ((projectRepository.count()+1)/2)-1);
+                model.addAttribute("actualPage", 0);
+            } else {
+                Page<Project> projects = projectRepository.findAll(PageRequest.of(number, 2));
+                model.addAttribute("projects", projects);
+
+                model.addAttribute("numberOfPages", ((projectRepository.count()+1)/2)-1);
+                model.addAttribute("actualPage", number);
+            }
+
+        }
+
         return "myfront/checkProjects";
     }
 }
