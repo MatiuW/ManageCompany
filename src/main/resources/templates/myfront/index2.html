@@ -77,9 +77,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Znajdź projekt</h5>
                         <h6>Tutaj możesz zobaczyć wszystkie projekty.</h6>
-                        <form th:action="checkProjects" method="get">
-                            <input type="submit" class="btn btn-primary" value="Szukaj projektu" />
-                        </form>
+<!--                        <form th:action="checkProjects" method="get">-->
+
+                        <a type="submit" class="btn btn-primary"  th:href="@{/checkProjects(number=0)}">Szukaj projektu</a>
+<!--                        </form>-->
                     </div>
                 </div>
 
