@@ -54,11 +54,11 @@
 
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Id projektu</label>
+<!--                                <label class="col-sm-2 col-form-label">Id projektu</label>-->
                                 <div class="col-sm-10">
 <!--                                    <input type="text" class="form-control" th:text="${projectId}" disabled>-->
 <!--                                    <p th:text="${projectId}" field="*{projectId}"></p>-->
-                                    <textarea th:text="${projectId}" field="*{projectId}" name="projectId" class="form-control" style="height: 100px"></textarea>
+                                    <input type="hidden" th:value="${projectId}" field="*{projectId}" name="projectId" class="form-control"></input>
                                 </div>
                             </div>
 
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <input type="submit" value="Dodaj użytkowników">
+                            <input type="submit" class="btn btn-primary" value="Dodaj użytkowników">
 
                         </form><!-- End General Form Elements -->
 

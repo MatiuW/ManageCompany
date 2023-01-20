@@ -91,8 +91,6 @@ public class IndexController {
 
         System.out.println(number);//pobieram 0 1 2
 
-
-
         if(projectRepository.count() %2==0) {//parzyste
             if(number > (projectRepository.count()/2)-1) {
 
