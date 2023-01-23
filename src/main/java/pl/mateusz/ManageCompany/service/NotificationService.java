@@ -98,9 +98,6 @@ public class NotificationService {
             frontDisplayNotifications.subList(5, frontDisplayNotifications.size()).clear();
         }
 
-
-//        elitarna.subList(inputData.size(), elitarna.size()).clear();
-
         return frontDisplayNotifications;
     }
 
