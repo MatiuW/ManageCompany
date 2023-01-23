@@ -16,6 +16,7 @@ import pl.mateusz.ManageCompany.model.Project.Project;
 import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 import pl.mateusz.ManageCompany.service.EmployeeService;
+import pl.mateusz.ManageCompany.service.NotificationService;
 import pl.mateusz.ManageCompany.service.ProjectService;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class IndexController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/index2")
     public String login(Model model) {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -44,6 +48,13 @@ public class IndexController {
             model.addAttribute("name", employee.getName());
             model.addAttribute("surname", employee.getSurname());
             model.addAttribute("fullname", employee.getName() + " " + employee.getSurname());
+
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
 
         }else {
             //To-Do
@@ -71,6 +82,13 @@ public class IndexController {
             model.addAttribute("phone", employee.getPhone());
             model.addAttribute("email", employee.getEmail());
             model.addAttribute("description", employee.getDescription());
+
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
         }else {
             //To-Do
         }
@@ -78,13 +96,35 @@ public class IndexController {
     }
 
     @GetMapping("createProject")
-    public String createProject() {
+    public String createProject(Model model) {
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user instanceof UserDetails){
+            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
+        }
+
         return "myfront/createProject";
     }
 
 
     @GetMapping("/checkProjects{number}")
     public String checkProjects(Model model, @RequestParam int number) {//Pageable pageable
+
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user instanceof UserDetails){
+            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
+        }
 
         //paginacja i sortowanie- mozliwosc wylaczenia przejscia na kolejna karte lub poprzedia
         //wyroznienie karty ktora zostala wybrana

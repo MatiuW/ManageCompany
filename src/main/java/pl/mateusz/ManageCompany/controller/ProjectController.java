@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
+import pl.mateusz.ManageCompany.model.Notification.NotificationType;
 import pl.mateusz.ManageCompany.model.Project.AddEmployeeToProject;
 import pl.mateusz.ManageCompany.model.Project.CreateProject;
 import pl.mateusz.ManageCompany.model.Project.Project;
@@ -15,6 +16,7 @@ import pl.mateusz.ManageCompany.model.Task.Task;
 import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 import pl.mateusz.ManageCompany.service.EmployeeService;
+import pl.mateusz.ManageCompany.service.NotificationService;
 import pl.mateusz.ManageCompany.service.ProjectService;
 import pl.mateusz.ManageCompany.service.TaskService;
 
@@ -39,6 +41,9 @@ public class ProjectController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @PostMapping("/createProject")
     public String createProject(@ModelAttribute(value="createProject") CreateProject createProject) {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -54,6 +59,13 @@ public class ProjectController {
     @RequestMapping(value = "/deleteEmployeeFromProject/{employeeId}/{projectId}", method = {RequestMethod.GET, RequestMethod.DELETE})
     public String deleteEmployeeFromProject(@PathVariable Long employeeId, @PathVariable Long projectId , Model model) {
 
+        //notyfikacja
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user instanceof UserDetails) {
+            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+
+            notificationService.saveNotification(employeeId, projectId, employee.getId(), NotificationType.DELETE_FROM_PROJECT);
+        }
 
         projectService.deleteEmployeeFromProject(employeeId, projectId);
         model.addAttribute("project", projectService.findProjectById(projectId));
@@ -72,6 +84,13 @@ public class ProjectController {
             Set<Project> projects = employee.getProjects();
 
             model.addAttribute("projects", projects);
+
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
         }else {}
 
         return "myfront/yourProjects";
@@ -88,6 +107,12 @@ public class ProjectController {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(user instanceof UserDetails) {
             Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
 
             if(projectService.findProjectById(id).getProjectOwnerId().equals(employee.getId())) {//jesli jest wlascicielem projektu
                 model.addAttribute("employees", projectService.findProjectById(id).getEmployees());
@@ -119,6 +144,13 @@ public class ProjectController {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(user instanceof UserDetails) {
             Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
+
             if(projectService.findProjectById(projectId).getProjectOwnerId().equals(employee.getId())) {
 
                 Set<Employee> employeesOutsideProject = projectService.findAllEmployeesInProject(projectId);
@@ -151,8 +183,16 @@ public class ProjectController {
     @PostMapping("/addEmployeeToProject")
     public String addEmployeeToProject(@ModelAttribute(value = "addEmployeeToProject") AddEmployeeToProject addEmployeeToProject, Model model) {
 
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user instanceof UserDetails) {
+            Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+
+            notificationService.saveNotification(addEmployeeToProject.getEmployeeId(), addEmployeeToProject.getProjectId(), employee.getId(), NotificationType.ADD_TO_PROJECT);
+        }
+
 //        System.out.println(addEmployeeToProject.getEmployeeId() + " " + addEmployeeToProject.getProjectId());
         projectService.addEmployeeToProject(addEmployeeToProject.getEmployeeId(), addEmployeeToProject.getProjectId());
+
         model.addAttribute("ownerId", projectService.findProjectById(addEmployeeToProject.getProjectId()).getProjectOwnerId());
         model.addAttribute("project", projectService.findProjectById(addEmployeeToProject.getProjectId()));
         model.addAttribute("employees", projectService.findProjectById(addEmployeeToProject.getProjectId()).getEmployees());

@@ -78,7 +78,7 @@ public class TaskService {
         return task;
     }
 
-    public void addCommentToPost(AddCommentToTask addCommentToTask) {
+    public void addCommentToTask(AddCommentToTask addCommentToTask) {
         Task task = findTaskById(addCommentToTask.getTaskId());
 
         Comment comment = new Comment();

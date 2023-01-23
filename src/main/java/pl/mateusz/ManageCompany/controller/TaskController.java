@@ -15,6 +15,7 @@ import pl.mateusz.ManageCompany.model.Comment.AddCommentToTask;
 import pl.mateusz.ManageCompany.repository.EmployeeRepository;
 import pl.mateusz.ManageCompany.repository.ProjectRepository;
 import pl.mateusz.ManageCompany.service.EmployeeService;
+import pl.mateusz.ManageCompany.service.NotificationService;
 import pl.mateusz.ManageCompany.service.ProjectService;
 import pl.mateusz.ManageCompany.service.TaskService;
 
@@ -38,6 +39,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/addTaskToProject{projectId}")
     public String addTask(@PathVariable Long projectId, Model model) {
         model.addAttribute("projectId", projectId);
@@ -45,6 +49,12 @@ public class TaskController {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(user instanceof UserDetails) {
             Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
 
             if(projectService.findProjectById(projectId).getProjectOwnerId().equals(employee.getId())) {
 
@@ -105,6 +115,12 @@ public class TaskController {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(user instanceof UserDetails) {
             Employee employee = employeeService.findEmployeeByName(((UserDetails) user).getUsername());
+            model.addAttribute("notifications", notificationService.findAllNotifications(employee.getId()));
+            if(notificationService.numberOfEmployeeNotifications(employee.getId()) >= 1) {
+                model.addAttribute("numberOfNotification", notificationService.numberOfEmployeeNotifications(employee.getId()));
+            }else {
+                model.addAttribute("numberOfNotification", 0);
+            }
 
             if(projectService.findProjectById(taskService.findTaskById(taskId).getProject().getId()).getEmployees().contains(employeeService.findEmployeeById(employee.getId()))) {//jesli nie jest wlascicielem ale uczestniczysz
 
@@ -118,8 +134,8 @@ public class TaskController {
                                     employeeService.findEmployeeById(c.getOwnerId()).getSurname(),
                             new DateFormat().formatDate(c.getDate())));
                 }
-
                 frontDisplayComment.sort(Comparator.comparing(FrontDisplayComment::getDate));
+
                 model.addAttribute("frontDisplayComments", frontDisplayComment);
                 model.addAttribute("employeesOutsideTask", taskService.findAllEmployeesOutsideProject(taskId));
                 model.addAttribute("employeesInsideTask", taskService.findAllEmployeesInsideProject(taskId));
@@ -142,7 +158,7 @@ public class TaskController {
 
         }else {}
 
-        taskService.addCommentToPost(addCommentToTask);
+        taskService.addCommentToTask(addCommentToTask);
 
         return "redirect:/task" + addCommentToTask.getTaskId();
     }

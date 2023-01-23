@@ -1,5 +1,7 @@
 package pl.mateusz.ManageCompany.model.Employees;
 
+import pl.mateusz.ManageCompany.model.Comment.Comment;
+import pl.mateusz.ManageCompany.model.Notification.Notification;
 import pl.mateusz.ManageCompany.model.Project.Project;
 import pl.mateusz.ManageCompany.model.Task.Task;
 
@@ -55,6 +57,9 @@ public class Employee {
     )
     private Set<Project> projects = new HashSet<>();
 
+    @OneToMany
+    @JoinColumn(name = "employee_id")
+    private Set<Notification> notifications;
 
     public void addProject(Project project) {
         this.projects.add(project);
@@ -170,5 +175,17 @@ public class Employee {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void addNotification(Notification notification) {
+        this.notifications.add(notification);
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
     }
 }
