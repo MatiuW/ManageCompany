@@ -1,9 +1,10 @@
 package pl.mateusz.ManageCompany.model.Project;
 
+import jakarta.persistence.*;
 import pl.mateusz.ManageCompany.model.Employees.Employee;
 import pl.mateusz.ManageCompany.model.Task.Task;
 
-import javax.persistence.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +12,9 @@ import java.util.Set;
 @Entity
 public class Project {
 
+
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String projectTitle;
@@ -23,21 +25,21 @@ public class Project {
     private Long projectOwnerId;
     private String tags;
     private String description;
-
+//
     @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private Set<Task> tasks;
+//    @OneToMany
+//    @JoinColumn(name = "project_id")
+//    private Set<Task> tasks;
 
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
-    }
+//    public Set<Task> getTasks() {
+//        return tasks;
+//    }
+//
+//    public void setTasks(Set<Task> tasks) {
+//        this.tasks = tasks;
+//    }
 
     public String getProjectTitle() {
         return projectTitle;
@@ -115,9 +117,9 @@ public class Project {
         this.employees.add(employee);
     }
 
-    public void addTask(Task task) {
-        this.tasks.add(task);
-    }
+//    public void addTask(Task task) {
+//        this.tasks.add(task);
+//    }
 
 //    public void addBook(Book book) {
 //        this.books.add(book);

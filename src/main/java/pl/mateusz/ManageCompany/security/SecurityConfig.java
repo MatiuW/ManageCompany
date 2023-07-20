@@ -1,44 +1,36 @@
 package pl.mateusz.ManageCompany.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+@RequiredArgsConstructor
+public class SecurityConfig {
 
-    @Autowired
-    UserDetailsService userDetailsService;
-
-    @Autowired
-    private EmployeeUrlAuthenticationSuccessHandler successHandler;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userDetailsService);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").hasAnyRole("BASIC", "ADMIN")
-                .antMatchers("/index").permitAll()
-                .antMatchers("/components-alerts").permitAll()
-                .and().formLogin().successHandler(successHandler)
-                .loginPage("/login").permitAll()
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
-
-        http.cors().and().csrf().disable();
-    }
-
+    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
+    private final EmployeeAuthProvider employeeAuthProvider;
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .exceptionHandling(customizer -> customizer.authenticationEntryPoint(userAuthenticationEntryPoint))
+                .addFilterBefore(new JwtAuthFilter(employeeAuthProvider), BasicAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/allProjects").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/yourProjects").permitAll()
+                        .anyRequest().authenticated());
+
+        return http.build();
     }
 }

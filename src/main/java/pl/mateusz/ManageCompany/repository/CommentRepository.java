@@ -7,6 +7,7 @@ import pl.mateusz.ManageCompany.model.Employees.Employee;
 
 import java.util.Optional;
 
-public interface CommentRepository extends CrudRepository<Comment, Long> {
+public interface CommentRepository //extends CrudRepository<Comment, Long>
+{
 
 }

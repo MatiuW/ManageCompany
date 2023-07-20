@@ -8,7 +8,8 @@ import pl.mateusz.ManageCompany.model.Task.Task;
 
 import java.util.List;
 
-public interface TaskRepository extends CrudRepository<Task, Long> {
+public interface TaskRepository //extends CrudRepository<Task, Long>
+{
 
 //    void findById(Long taskId, Pageable pageable);
 }

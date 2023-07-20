@@ -9,18 +9,18 @@ import pl.mateusz.ManageCompany.model.Comment.AddCommentToTask;
 import pl.mateusz.ManageCompany.model.Notification.FrontDisplayNotification;
 import pl.mateusz.ManageCompany.service.NotificationService;
 
-import javax.servlet.http.HttpServletRequest;
 
-@Controller
+
+//@Controller
 public class NotificationController {
 
-    @Autowired
-    private NotificationService notificationService;
+//    @Autowired
+//    private NotificationService notificationService;
 
-    @PostMapping("/notificationChecked")
-    public String notificationChecked(@ModelAttribute(value = "frontDisplayNotification") FrontDisplayNotification frontDisplayNotification) {
-        notificationService.changeNotificationStatus(frontDisplayNotification.getId());
-
-        return "redirect:/index2";
-    }
+//    @PostMapping("/notificationChecked")
+//    public String notificationChecked(@ModelAttribute(value = "frontDisplayNotification") FrontDisplayNotification frontDisplayNotification) {
+//        notificationService.changeNotificationStatus(frontDisplayNotification.getId());
+//
+//        return "redirect:/index2";
+//    }
 }
